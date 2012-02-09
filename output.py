@@ -46,7 +46,8 @@ def playRawBeat(raw_beat):
         if(local_time < evt["time"]):
             t_evt.wait(evt["time"] - local_time)
         local_time = time.time() - start_time
-        playsound(evt["sound"])
+        for sound in evt["sounds"]:
+            playsound(sound)
 
                    
         

@@ -16,7 +16,13 @@ class Beat(object):
     def to_raw_internal(self, pattern, offset, total):
         interval = total / len(pattern)
 
-        res = [type(pattern[i]) is list and self.to_raw_internal(pattern[i], interval * i + offset, interval) or {"time": interval * i + offset, "sound":self.sounds[pattern[i]]} for i in xrange(len(pattern)) if pattern[i]]
+        def sounds_for(p):
+            if(type(p) is tuple):
+                return [self.sounds[e] for e in p]
+            else:
+                return [self.sounds[p]]
+
+        res = [type(pattern[i]) is list and self.to_raw_internal(pattern[i], interval * i + offset, interval) or {"time": interval * i + offset, "sounds":sounds_for(pattern[i])} for i in xrange(len(pattern)) if pattern[i]]
         
         return flatten(res)
 
