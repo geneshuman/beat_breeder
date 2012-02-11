@@ -1,4 +1,11 @@
+import time, random
+
 from util import *
+
+from output import *
+
+initSoundEngine()
+
 
 def reduce_track(track):
     if(type(track) is not list):
@@ -40,6 +47,9 @@ class Phrase(object):
     def __init__(self, bpm, sounds, tracks):
         self.bpm, self.sounds, self.tracks = bpm, sounds, tracks
 
+        self.rating = 0
+        self.num_ratings = 0
+
         
     def to_raw(self):
         sec_per_beat = 60.0 / self.bpm
@@ -76,3 +86,47 @@ class Phrase(object):
         self.tracks = [reduce_track(track) for track in self.tracks]
 
         
+    def play(self):
+        playRawPhrase(self.sounds, self.to_raw())
+
+
+
+# random phrase generator4
+from mutate import *
+
+num_base_mutations = 20
+
+base_rhythms = [[1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2],
+                [1,0,2,0,0,1,2,0,1,0,2,0,0,1,2,0,1,0,2,0,0,1,2,0,1,0,2,0,0,1,2,0]]
+
+base_hats = [[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+             [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+             [3,3,3,3,3,3,3,3]]
+
+random.seed(time.time())
+
+def generate_random_phrase():
+    i = random.randint(0, len(base_rhythms) -1)
+    # print "rhythm", i
+    rhythm = base_rhythms[i]
+    for i in xrange(num_base_mutations):
+        rhythm = mutate(rhythm)
+         
+    i = random.randint(0, len(base_hats) -1)
+
+    # print "hats", i
+    hats = base_hats[i]
+    for i in xrange(num_base_mutations):
+        hats = mutate(hats)
+
+    return Phrase(90 + random.randint(0, 70), {0:None, 1: "samples/BT3AADA.WAV", 2:"samples/HANDCLP1.WAV", 3:"samples/CLOP1.WAV"}, [rhythm, hats])
+
+
+def phrase_distance(phrase1, phrase2):
+    return 0.5;
+
+from copy import copy
+def breed(phrase1, phrase2):
+    p = copy(phrase1)
+    p.num_ratings = 0
+    return p
