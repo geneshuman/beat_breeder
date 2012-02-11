@@ -20,6 +20,7 @@ def mutate(track):
 
 def double_base_node(track):
     print "double_base_node"
+    
     track = reduce_track(track)
     i = random.randint(0, len(track) - 1)    
     track[i] = [track[i], track[i]]
@@ -29,6 +30,7 @@ def double_base_node(track):
 
 def triple_base_node(track):
     print "triple_base_node"
+    
     track = reduce_track(track)
     i = random.randint(0, len(track) - 1)    
     track[i] = [track[i], track[i]]
@@ -38,6 +40,7 @@ def triple_base_node(track):
 
 def drop_base_node(track):
     print "drop_base_node"
+    
     track = reduce_track(track)
     i = random.randint(0, len(track) - 1)    
     track[i] = []
@@ -47,6 +50,7 @@ def drop_base_node(track):
 
 def swap_base_nodes(track):
     print "swap_base_node"
+    
     track = reduce_track(track)
     i = random.randint(0, len(track) - 1)
     tmp = track[i]
@@ -56,7 +60,32 @@ def swap_base_nodes(track):
     return reduce_track(track)
 
 
-mutations = [(.5, double_base_node), (.3, triple_base_node), (.7, drop_base_node), (.5, swap_base_nodes)]
+def replace_following_node(track):
+    print "replace_following_node"
+    
+    track = reduce_track(track)
+    i = random.randint(0, len(track) - 1)
+    track[(i + 1) % len(track)] = track[i]
+
+    return reduce_track(track)
+
+
+def replace_preceeding_node(track):
+    print "replace_preceeding_node"
+    
+    track = reduce_track(track)
+    i = random.randint(0, len(track) - 1)
+    track[i - 1] = track[i]
+
+    return reduce_track(track)
+
+
+mutations = [(.5, double_base_node),
+             (.3, triple_base_node),
+             (.9, drop_base_node),
+             (.5, replace_following_node),
+             (.5, replace_preceeding_node),
+             (.5, swap_base_nodes)]
 
 
 

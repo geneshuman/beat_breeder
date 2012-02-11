@@ -15,11 +15,11 @@ track2 = [[(1,3),3,(2,3),3,3,[(1,3),3,3,3],(2,3),3],[(1,3),3,(2,3),3,3,[(1,3),1]
 track3 = [[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]]
 
 print "rhythm"
-for i in xrange(5):
+for i in xrange(10):
     track1 = mutate(track1)
 
 print "hats"
-for i in xrange(5):
+for i in xrange(10):
     track3 = mutate(track3)
     
 
