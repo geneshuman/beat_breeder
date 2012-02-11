@@ -31,9 +31,11 @@ while(True):
         phrase_offset = config["generation"] * population_size        
         while(config["num_ratings"] != config["necessary_ratings"]):
             next_phrase = phrase_offset + random.randint(0, population_size - 1)
-            # print "rating phrase:", config["generation"], config["num_ratings"], next_phrase
             phrase = swarm[str(next_phrase)]
-    
+            
+            print "generation:", config["generation"]
+            print "num_rated_phrases:", config["num_ratings"]
+            print "phrase idx:", next_phrase
             phrase.play()
             time.sleep(0.5)
     
@@ -71,8 +73,6 @@ while(True):
         # top rated phrases -> parent_pool
         print "getting parents for the next generation"
         current_phrases = [swarm[str(phrase_offset + i)] for i in xrange(population_size)]
-        # print [phrase.swarm_idx for phrase in current_phrases]
-
         parent_pool = sorted(current_phrases, key = lambda phrase: phrase.rating)[::-1][0:config["parent_pool_size"]]
         # print [(phrase.swarm_idx, phrase.rating) for phrase in parent_pool]
 

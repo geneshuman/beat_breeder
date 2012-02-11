@@ -6,42 +6,6 @@ from output import *
 
 initSoundEngine()
 
-
-def reduce_track(track):
-    if(type(track) is not list):
-        return track
-
-    if(len(track) == 0):
-        return []
-    
-    if(len(track) == 1):
-        return reduce_track(track[0])
-
-    sub_tracks = [reduce_track(sub_track) for sub_track in track]
-        
-    lengths = [type(sub_track) is not list and 1 or len(sub_track) for sub_track in sub_tracks]
-    
-    def get_len_group_sizes(lens, cur, res):
-        if(lens[0] == cur):
-            res[-1] += 1
-        else:
-            cur = lens[0]
-            res.append(1)
-    
-        return len(lens) == 1 and res[::-1] or get_len_group_sizes(lens[1:], cur, res)
-
-    len_group_sizes = get_len_group_sizes(lengths[1:], lengths[0], [1])
-
-    g = gcd(len_group_sizes)
-
-    result = [shallow_flatten(sub_tracks[n:n+g]) for n in range(0, len(sub_tracks), g)]
-
-    if(len(result) == 1):
-        result = result[0]
-            
-    return result
-
-
 class Phrase(object):
 
     def __init__(self, bpm, sounds, tracks):
@@ -90,8 +54,43 @@ class Phrase(object):
         playRawPhrase(self.sounds, self.to_raw())
 
 
+# reduce track to cannonical form - i.e. remove all unnecessary brackets
+def reduce_track(track):
+    if(type(track) is not list):
+        return track
 
-# random phrase generator4
+    if(len(track) == 0):
+        return []
+    
+    if(len(track) == 1):
+        return reduce_track(track[0])
+
+    sub_tracks = [reduce_track(sub_track) for sub_track in track]
+        
+    lengths = [type(sub_track) is not list and 1 or len(sub_track) for sub_track in sub_tracks]
+    
+    def get_len_group_sizes(lens, cur, res):
+        if(lens[0] == cur):
+            res[-1] += 1
+        else:
+            cur = lens[0]
+            res.append(1)
+    
+        return len(lens) == 1 and res[::-1] or get_len_group_sizes(lens[1:], cur, res)
+
+    len_group_sizes = get_len_group_sizes(lengths[1:], lengths[0], [1])
+
+    g = gcd(len_group_sizes)
+
+    result = [shallow_flatten(sub_tracks[n:n+g]) for n in range(0, len(sub_tracks), g)]
+
+    if(len(result) == 1):
+        result = result[0]
+            
+    return result
+
+
+# random phrase generator
 from mutate import *
 
 num_base_mutations = 20
@@ -122,9 +121,12 @@ def generate_random_phrase():
     return Phrase(90 + random.randint(0, 70), {0:None, 1: "samples/BT3AADA.WAV", 2:"samples/HANDCLP1.WAV", 3:"samples/CLOP1.WAV"}, [rhythm, hats])
 
 
+# phrase distance function
 def phrase_distance(phrase1, phrase2):
-    return 0.5;
+    return 0.5
 
+
+# phrase interpolation
 from copy import copy
 def breed(phrase1, phrase2):
     p = copy(phrase1)
