@@ -3,6 +3,7 @@ from phrase import *
 
 random.seed(time.time())
 
+
 def mutate(track):
     func = False
     
@@ -17,8 +18,8 @@ def mutate(track):
     return func(track)
 
 
-def double_base_event(track):
-    print "double_base_event"
+def double_base_node(track):
+    print "double_base_node"
     track = reduce_track(track)
     i = random.randint(0, len(track) - 1)    
     track[i] = [track[i], track[i]]
@@ -26,4 +27,17 @@ def double_base_event(track):
     return track
 
 
-mutations = [(.5, double_base_event)]
+def triple_base_node(track):
+    print "triple_base_node"
+    track = reduce_track(track)
+    i = random.randint(0, len(track) - 1)    
+    track[i] = [track[i], track[i]]
+
+    return track
+
+
+mutations = [(.5, double_base_node), (.3, triple_base_node)]
+
+
+
+

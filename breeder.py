@@ -12,10 +12,17 @@ initSoundEngine()
 
 track1 = [[1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2]]
 track2 = [[(1,3),3,(2,3),3,3,[(1,3),3,3,3],(2,3),3],[(1,3),3,(2,3),3,3,[(1,3),1],(2,3),3],[(1,3),3,(2,3),3,3,(1,3),(2,3),3],[(1,3),3,(2,3),[3,2],[3,2],(3,1),(3,2),(3,1)]]
+track3 = [[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]]
 
-track1 = mutate(track1)
 
-phrase = Phrase(120, {0:None, 1: "samples/BT3AADA.WAV", 2:"samples/HANDCLP1.WAV", 3:"samples/CLOP1.WAV"}, [track1])
+for i in xrange(5):
+    track1 = mutate(track1)
+
+for i in xrange(5):
+    track3 = mutate(track3)
+    
+
+phrase = Phrase(120, {0:None, 1: "samples/BT3AADA.WAV", 2:"samples/HANDCLP1.WAV", 3:"samples/CLOP1.WAV"}, [track1, track3])
 
 playRawPhrase(phrase.sounds, phrase.to_raw())
 
