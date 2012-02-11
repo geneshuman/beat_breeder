@@ -12,7 +12,7 @@ FRAMERATE = 30 # how often to check if playback has finished
 
 loaded_samples = {}
 
-
+# initialize engine
 def initSoundEngine():
      try:
          pygame.mixer.init(FREQ, BITSIZE, CHANNELS, BUFFER)
@@ -21,32 +21,29 @@ def initSoundEngine():
          system.exit(0)         
 
          
+# play a sample         
 def playSample(sample_name):
     loaded_samples[sample_name].play()
 
-
+    
+# load a sample into preloaded database
 def loadSamples(samples):
     for sample in samples:
         if(sample):            
             loaded_samples[sample] = pygame.mixer.Sound(sample)
 
-            
-def playRawBeat(raw_beat):
-    try:
-        playsound(sys.argv[1])
-    except pygame.error, exc:
-        print >>sys.stderr, "Could not play sound file: %s" % soundfile
-        print exc
 
-
-def playRawBeat(samples, raw_beat):
+# play a raw phrase 
+def playRawPhrase(samples, raw_phrase):
     loadSamples(samples.values())
-    start_time = time.time() + 0.1
+    
+    start_time = time.time() + 0.1 # add 0.1 to reduce initial stuttering
+    
     t_evt = threading.Event()
-    while(len(raw_beat) != 0):
+    while(len(raw_phrase) != 0):
         local_time = time.time() - start_time
-        evt = raw_beat[0]
-        raw_beat = raw_beat[1:]
+        evt = raw_phrase[0]
+        raw_phrase = raw_phrase[1:]
         if(local_time < evt["time"]):
             t_evt.wait(evt["time"] - local_time)
         local_time = time.time() - start_time

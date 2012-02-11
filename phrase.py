@@ -1,15 +1,15 @@
 from util import *
 
-def reduce_pattern(pattern):
-    if(type(pattern) is not list):
-        return pattern
+def reduce_track(track):
+    if(type(track) is not list):
+        return track
                     
-    if(len(pattern) == 1):
-        return reduce_pattern(pattern[0])
+    if(len(track) == 1):
+        return reduce_track(track[0])
 
-    sub_patterns = [reduce_pattern(sub_pattern) for sub_pattern in pattern]
+    sub_tracks = [reduce_track(sub_track) for sub_track in track]
         
-    lengths = [type(sub_pattern) is not list and 1 or len(sub_pattern) for sub_pattern in sub_patterns]
+    lengths = [type(sub_track) is not list and 1 or len(sub_track) for sub_track in sub_tracks]
     
     def get_len_group_sizes(lens, cur, res):
         if(lens[0] == cur):
@@ -24,7 +24,7 @@ def reduce_pattern(pattern):
 
     g = gcd(len_group_sizes)
 
-    result = [shallow_flatten(sub_patterns[n:n+g]) for n in range(0, len(sub_patterns), g)]
+    result = [shallow_flatten(sub_tracks[n:n+g]) for n in range(0, len(sub_tracks), g)]
 
     if(len(result) == 1):
         result = result[0]
@@ -32,10 +32,10 @@ def reduce_pattern(pattern):
     return result
 
 
-class Beat(object):
+class Phrase(object):
 
-    def __init__(self, bpm, sounds, patterns):
-        self.bpm, self.sounds, self.patterns = bpm, sounds, patterns
+    def __init__(self, bpm, sounds, tracks):
+        self.bpm, self.sounds, self.tracks = bpm, sounds, tracks
 
         
     def to_raw(self):
@@ -44,13 +44,13 @@ class Beat(object):
 
         self.reduce
 
-        raw_beats = flatten([self.to_raw_internal(pattern, 0, total_time) for pattern in self.patterns])
+        raw_events = flatten([self.to_raw_internal(track, 0, total_time) for track in self.tracks])
     
-        return sorted(raw_beats, key = lambda beat: beat["time"])
+        return sorted(raw_events, key = lambda event: event["time"])
 
 
-    def to_raw_internal(self, pattern, offset, total):
-        interval = total / len(pattern)
+    def to_raw_internal(self, track, offset, total):
+        interval = total / len(track)
 
         def sounds_for(p):
             if(type(p) is tuple):
@@ -64,12 +64,12 @@ class Beat(object):
             else:
                 return {"time": intv * i + off, "sounds":sounds_for(p)}
             
-        res = [res_for(pattern[i], interval, offset) for i in xrange(len(pattern)) if pattern[i]]
+        res = [res_for(track[i], interval, offset) for i in xrange(len(track)) if track[i]]
         
         return flatten(res)
 
 
     def reduce(self):
-        self.patterns = [reduce_pattern(pattern) for pattern in self.patterns]
+        self.tracks = [reduce_track(track) for track in self.tracks]
 
         

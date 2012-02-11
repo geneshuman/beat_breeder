@@ -1,9 +1,9 @@
 import random, time
-from beat import *
+from phrase import *
 
 random.seed(time.time())
 
-def mutate(pattern):
+def mutate(track):
     func = False
     
     while(not func):
@@ -14,16 +14,16 @@ def mutate(pattern):
         if(f < mutation[0]):
             func = mutation[1]
             
-    return func(pattern)
+    return func(track)
 
 
-def double_base_event(pattern):
+def double_base_event(track):
     print "double_base_event"
-    pattern = reduce_pattern(pattern)
-    i = random.randint(0, len(pattern) - 1)    
-    pattern[i] = [pattern[i], pattern[i]]
+    track = reduce_track(track)
+    i = random.randint(0, len(track) - 1)    
+    track[i] = [track[i], track[i]]
 
-    return pattern
+    return track
 
 
 mutations = [(.5, double_base_event)]
