@@ -10,24 +10,27 @@ CHANNELS = 2   # 1 == mono, 2 == stereo
 BUFFER = 1024  # audio buffer size in no. of samples
 FRAMERATE = 30 # how often to check if playback has finished
 
+loaded_samples = {}
+
+
 def initSoundEngine():
      try:
          pygame.mixer.init(FREQ, BITSIZE, CHANNELS, BUFFER)
      except pygame.error, exc:
          print >>sys.stderr, "Could not initialize sound system: %s" % exc
-         system.exit(0)
+         system.exit(0)         
+
          
-
-def playsound(soundfile):
-    """Play sound through default mixer channel in blocking manner.
-    
-    This will load the whole sound into memory before playback
-    """
-
-    sound = pygame.mixer.Sound(soundfile)
-    sound.play()
+def playSample(sample_name):
+    loaded_samples[sample_name].play()
 
 
+def loadSamples(samples):
+    for sample in samples:
+        if(sample):            
+            loaded_samples[sample] = pygame.mixer.Sound(sample)
+
+            
 def playRawBeat(raw_beat):
     try:
         playsound(sys.argv[1])
@@ -36,7 +39,8 @@ def playRawBeat(raw_beat):
         print exc
 
 
-def playRawBeat(raw_beat):
+def playRawBeat(samples, raw_beat):
+    loadSamples(samples.values())
     start_time = time.time() + 0.1
     t_evt = threading.Event()
     while(len(raw_beat) != 0):
@@ -47,7 +51,7 @@ def playRawBeat(raw_beat):
             t_evt.wait(evt["time"] - local_time)
         local_time = time.time() - start_time
         for sound in evt["sounds"]:
-            playsound(sound)
+            playSample(sound)
 
                    
         
