@@ -3,7 +3,10 @@ from util import *
 def reduce_track(track):
     if(type(track) is not list):
         return track
-                    
+
+    if(len(track) == 0):
+        return []
+    
     if(len(track) == 1):
         return reduce_track(track[0])
 
