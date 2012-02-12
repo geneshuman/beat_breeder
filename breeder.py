@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-
+""" beat_breeder.breeder
+"""
 import sys, shelve, random
 from phrase import *
 from mutate import *

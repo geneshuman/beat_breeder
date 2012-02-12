@@ -1,3 +1,5 @@
+""" beat_breader.mutate
+"""
 import random, time
 from phrase import *
 

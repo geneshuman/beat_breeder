@@ -1,3 +1,5 @@
+""" beat_breeder.phrase
+"""
 import time, random
 
 from util import *
