@@ -64,7 +64,7 @@ while(True):
             ratings = []
             for j in xrange(config["num_rating_exterpolation_pts"]):
                 pt = rated_phrases[random.randint(0, len(rated_phrases) - 1)]
-                ratings.append((1.0 - phrase_distance(pt, phrase)) * pt.rating)
+                ratings.append((1.0 - Phrase.phrase_distance(pt, phrase)) * pt.rating)
 
             phrase.rating = sum(ratings) / len(ratings);
             # print "rating phrase:", phrase.swarm_idx, "with", phrase.rating
@@ -82,7 +82,7 @@ while(True):
             parent1 = parent_pool[random.randint(0, len(parent_pool) - 1)]
             parent2 = parent_pool[random.randint(0, len(parent_pool) - 1)]
             # print "breeding", parent1.swarm_idx, parent2.swarm_idx
-            child = breed(parent1, parent2)
+            child = Phrase.breed(parent1, parent2)
             idx = phrase_offset + population_size + i
             child.swarm_idx = idx
             swarm[str(idx)] = child

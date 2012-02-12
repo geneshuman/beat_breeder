@@ -2,6 +2,7 @@ import time, random
 
 from util import *
 from output import *
+from copy import copy
 
 # random phrase generator
 num_base_mutations = 20
@@ -121,16 +122,18 @@ class Phrase(object):
         return Phrase(90 + random.randint(0, 70), {0:None, 1: "samples/BT3AADA.WAV", 2:"samples/HANDCLP1.WAV", 3:"samples/CLOP1.WAV"}, [rhythm, hats])
 
 
-# phrase distance function
-def phrase_distance(phrase1, phrase2):
-    return 0.5
+    # phrase distance function
+    @classmethod
+    def phrase_distance(klass, phrase1, phrase2):
+        return 0.5
 
 
-# phrase interpolation
-from copy import copy
-def breed(phrase1, phrase2):
-    p = copy(phrase1)
-    p.num_ratings = 0
-    return p
+    # phrase interpolation
+    @classmethod
+    def breed(klass, phrase1, phrase2):
+        
+        p = copy(phrase1)
+        p.num_ratings = 0
+        return p
 
 from mutate import *
