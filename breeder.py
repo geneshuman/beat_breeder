@@ -14,7 +14,7 @@ if(not swarm):
     swarm["config"] = config
     
     for i in xrange(config["population_size"]):
-        phrase = generate_random_phrase()
+        phrase = Phrase.generate_random_phrase()
         phrase.swarm_idx = i
         swarm[str(i)] = phrase
         
@@ -94,6 +94,6 @@ while(True):
         swarm["config"] = config
 
     except (KeyboardInterrupt, SystemExit):
-        print "exiting"
+        print "\nexiting"
         sys.exit(0)
 
