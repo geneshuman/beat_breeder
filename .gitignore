@@ -18,3 +18,4 @@ est
 *.log
 sources/pypm/build/*
 *.brd
+node/*
