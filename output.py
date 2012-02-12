@@ -18,27 +18,27 @@ def initSoundEngine():
          pygame.mixer.init(FREQ, BITSIZE, CHANNELS, BUFFER)
      except pygame.error, exc:
          print >>sys.stderr, "Could not initialize sound system: %s" % exc
-         system.exit(0)         
+         system.exit(0)
 
-         
-# play a sample         
+
+# play a sample
 def playSample(sample_name):
     loaded_samples[sample_name].play()
 
-    
+
 # load a sample into preloaded database
 def loadSamples(samples):
     for sample in samples:
-        if(sample):            
+        if(sample):
             loaded_samples[sample] = pygame.mixer.Sound(sample)
 
 
-# play a raw phrase 
+# play a raw phrase
 def playRawPhrase(samples, raw_phrase):
     loadSamples(samples.values())
-    
+
     start_time = time.time() + 0.1 # add 0.1 to reduce initial stuttering
-    
+
     t_evt = threading.Event()
     while(len(raw_phrase) != 0):
         local_time = time.time() - start_time
@@ -49,6 +49,3 @@ def playRawPhrase(samples, raw_phrase):
         local_time = time.time() - start_time
         for sound in evt["sounds"]:
             playSample(sound)
-
-                   
-        

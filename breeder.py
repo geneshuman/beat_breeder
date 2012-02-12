@@ -12,12 +12,12 @@ if(not swarm):
     print "initializing swarm"
     config = {"population_size": 20, "generation": 0, "necessary_ratings": 3, "num_ratings": 0, "parent_pool_size": 5, "num_rating_exterpolation_pts": 2}
     swarm["config"] = config
-    
+
     for i in xrange(config["population_size"]):
         phrase = Phrase.generate_random_phrase()
         phrase.swarm_idx = i
         swarm[str(i)] = phrase
-        
+
     print "swarm initialized"
 
 config = swarm["config"]
@@ -28,22 +28,22 @@ while(True):
         raw_input("> press enter to begin")
         # play & rate sounds
         population_size = config["population_size"]
-        phrase_offset = config["generation"] * population_size        
+        phrase_offset = config["generation"] * population_size
         while(config["num_ratings"] != config["necessary_ratings"]):
             next_phrase = phrase_offset + random.randint(0, population_size - 1)
             phrase = swarm[str(next_phrase)]
-            
+
             print "generation:", config["generation"]
             print "num_rated_phrases:", config["num_ratings"]
             print "phrase idx:", next_phrase
             phrase.play()
             time.sleep(0.5)
-    
+
             rating = int(raw_input("> rating(123..0):"))
             phrase.rating = (phrase.num_ratings * phrase.rating + rating) / (phrase.num_ratings + 1)
             phrase.num_ratings += 1
             swarm[str(next_phrase)] = phrase
-    
+
             config["num_ratings"] += 1
             swarm["config"] = config
 
@@ -54,7 +54,7 @@ while(True):
         rated_indexes = set([phrase.swarm_idx for phrase in rated_phrases])
 
         # print rated_indexes
-        
+
         # extrapolate ratings to entire swarm
         print "extrapolation ratings"
         for i in xrange(population_size):
@@ -68,8 +68,8 @@ while(True):
 
             phrase.rating = sum(ratings) / len(ratings);
             # print "rating phrase:", phrase.swarm_idx, "with", phrase.rating
-            swarm[str(phrase.swarm_idx)] = phrase                            
-            
+            swarm[str(phrase.swarm_idx)] = phrase
+
         # top rated phrases -> parent_pool
         print "getting parents for the next generation"
         current_phrases = [swarm[str(phrase_offset + i)] for i in xrange(population_size)]
@@ -96,4 +96,3 @@ while(True):
     except (KeyboardInterrupt, SystemExit):
         print "\nexiting"
         sys.exit(0)
-
