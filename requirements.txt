@@ -1,0 +1,2 @@
+#pygame probably needs to go in here, right?
+couchdb==0.8
