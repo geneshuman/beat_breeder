@@ -1,0 +1,9 @@
+##
+## Example Configuration file for beatbreader.
+##
+##  You probably just want to move this to beatbreeder.ini and fill in the values.
+##
+[database]
+server=http://server.com:80/
+username=username_here
+password=password_here

@@ -19,3 +19,4 @@ est
 sources/pypm/build/*
 *.brd
 node/*
+beatbreeder.ini
