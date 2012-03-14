@@ -1,0 +1,19 @@
+==============
+For Developers
+==============
+
+# create a virtualenvironment for development, activate it
+virtualenv node
+source node/bin/activate
+
+# install the requirements
+pip install -r requirements.txt
+
+# install beatbreeder
+python setup.py develop
+
+# test basic import to check things out
+python -c"import beatbreeder"
+
+# rate some songs!
+python src/beatbreeder/breeder.py
